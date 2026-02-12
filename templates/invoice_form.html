@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <!-- MUST for mobile -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Invoice Generator</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- PWA -->
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#0d6efd">
+
+    <!-- Icons -->
+    <link rel="icon" type="image/png" href="/static/icons/icon-192.png">
+
+    <style>
+        body { padding-bottom: 40px; }
+        .card { border-radius: 14px; }
+        h3 { font-size: 1.4rem; }
+        @media (max-width: 576px) {
+            h3 { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+
+            <div class="card p-3 p-md-4 mt-4 shadow-sm">
+
+                <!-- ✅ Install Button (ONLY ONCE) -->
+                <button id="installBtn"
+                        class="btn btn-primary w-100 mb-3"
+                        style="display:none;">
+                    📲 Install App
+                </button>
+
+                <h3 class="text-center mb-3">Universal Invoice Generator</h3>
+
+                <form action="/generate" method="post">
+
+                    <input type="text" name="name" class="form-control mb-2" placeholder="Customer Name" required>
+
+                    <div class="form-check mb-1">
+                        <input class="form-check-input" type="checkbox" name="show_email" id="emailCheck">
+                        <label class="form-check-label" for="emailCheck">Include Email</label>
+                    </div>
+                    <input type="email" name="email" class="form-control mb-2" placeholder="Email">
+
+                    <div class="form-check mb-1">
+                        <input class="form-check-input" type="checkbox" name="show_mobile" id="mobileCheck">
+                        <label class="form-check-label" for="mobileCheck">Include Mobile</label>
+                    </div>
+                    <input type="text" name="mobile" class="form-control mb-2" placeholder="Mobile">
+
+                    <div class="form-check mb-1">
+                        <input class="form-check-input" type="checkbox" name="show_address" id="addressCheck">
+                        <label class="form-check-label" for="addressCheck">Include Address</label>
+                    </div>
+                    <textarea name="address" class="form-control mb-3" placeholder="Address"></textarea>
+
+                    <hr>
+
+                    <h6 class="fw-bold">Service / Item Details</h6>
+
+                    <input type="text" name="service_name" class="form-control mb-2"
+                           placeholder="Service or Product Name" required>
+
+                    <div class="row g-2">
+
+    <div class="col-6">
+        <label class="form-label small fw-semibold">Quantity</label>
+        <input 
+            type="number" 
+            name="quantity" 
+            class="form-control" 
+            value="1"
+            placeholder="e.g. 1, 2, 5"
+            required>
+        <small class="text-muted">Number of items / hours</small>
+    </div>
+
+    <div class="col-6">
+        <label class="form-label small fw-semibold">Rate (₹ per unit)</label>
+        <input 
+            type="number" 
+            name="rate" 
+            class="form-control" 
+            placeholder="e.g. 1000"
+            required>
+        <small class="text-muted">Price for one unit</small>
+    </div>
+
+</div>
+
+
+                    <div class="form-check mt-3 mb-1">
+                        <input class="form-check-input" type="checkbox" name="show_note" id="noteCheck">
+                        <label class="form-check-label" for="noteCheck">Include Notes</label>
+                    </div>
+                    <textarea name="note" class="form-control mb-3" placeholder="Notes / Terms"></textarea>
+
+                    <button class="btn btn-success w-100 py-2">
+                        Generate Invoice PDF
+                    </button>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ✅ Install Script (SAFE, ONLY ONCE) -->
+<script>
+let deferredPrompt = null;
+
+window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+
+    const btn = document.getElementById("installBtn");
+    if (btn) btn.style.display = "block";
+});
+
+document.getElementById("installBtn").addEventListener("click", async () => {
+    if (!deferredPrompt) return;
+
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    deferredPrompt = null;
+
+    document.getElementById("installBtn").style.display = "none";
+});
+</script>
+
+<!-- ✅ Service Worker (ONLY ONCE) -->
+<script>
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/static/service-worker.js");
+}
+</script>
+<hr>
+
+<div class="text-center mt-3">
+    <small class="text-muted">
+        Built by 
+        <a href="/ownership" class="glow-link fw-bold">
+    🚀 @ss web studio
+</a>
+
+    </small>
+    <style>
+.glow-link {
+    color: #0d6efd;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.glow-link:hover {
+    color: #fff;
+    text-shadow: 0 0 8px #0d6efd;
+}
+</style>
+
+</div>
+
+
+
+</body>
+</html>

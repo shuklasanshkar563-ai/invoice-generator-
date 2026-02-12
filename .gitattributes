@@ -1,0 +1,14 @@
+# Auto detect text files and normalize line endings
+* text=auto
+
+# Python
+*.py text eol=lf
+
+# HTML
+*.html text eol=lf
+
+# CSS
+*.css text eol=lf
+
+# JS
+*.js text eol=lf

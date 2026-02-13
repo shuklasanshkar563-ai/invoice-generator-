@@ -1,9 +1,11 @@
 {
+  "id": "com.shri.invoicegenerator",
   "name": "Invoice Generator App",
   "short_name": "InvoiceApp",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#ffffff",
   "theme_color": "#0d6efd",
   "icons": [

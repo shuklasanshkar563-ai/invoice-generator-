@@ -24,6 +24,9 @@ def generate_invoice():
     mobile = request.form.get("mobile", "")
     address = request.form.get("address", "")
 
+    # -------- PDF Name (NEW) --------
+    pdf_name = request.form.get("pdf_name", "").strip()
+
     # -------- Item Details --------
     service = request.form.get("service_name", "")
     qty = int(request.form.get("quantity", 1))
@@ -40,6 +43,13 @@ def generate_invoice():
 
     # -------- Invoice Meta --------
     invoice_no = f"INV-{datetime.now().strftime('%Y%m%d%H%M%S')}"
+
+    # -------- Default PDF Name if empty --------
+    if not pdf_name:
+        pdf_name = invoice_no
+
+    # Remove unsafe characters
+    pdf_name = "".join(c for c in pdf_name if c.isalnum() or c in (" ", "_", "-")).rstrip()
 
     # -------- Create PDF in Memory --------
     buffer = BytesIO()
@@ -101,9 +111,10 @@ def generate_invoice():
     return send_file(
         buffer,
         as_attachment=True,
-        download_name=f"{invoice_no}.pdf",
+        download_name=f"{pdf_name}.pdf",
         mimetype="application/pdf"
     )
+
 
 
 if __name__ == "__main__":
